@@ -41,7 +41,7 @@ export function Home() {
     }
   };
 
-  const unPairWithScooter = async (activeVehicle) => {
+  const unPairWithScooter = async () => {
     if(command === "STOP"){
       toggleScooterState();
     }
@@ -87,7 +87,7 @@ export function Home() {
 
   const onUnPair = async (e) => {
     e.preventDefault();
-    await unPairWithScooter(activeVehicle);
+    await unPairWithScooter();
   }
 
   return <>
