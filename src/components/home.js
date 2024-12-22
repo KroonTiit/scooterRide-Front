@@ -11,6 +11,7 @@ export function Home() {
   const [code, setCode] = useState('');
   const [activeVehicle, setActiveVehicle] = useState();
   const [command, setCommand] = useState("START");
+  
 
 
   const pairWithScooter = async () => {
