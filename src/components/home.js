@@ -4,7 +4,7 @@ import { db } from "../firebase/firebase.js";
 import { doc, getDoc } from "firebase/firestore";
 import {RideInterface} from "./rideInterface.js"
 import axios from "axios";
-// import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { Map } from "./map.js";
 
 export function Home() {
   const { currentUser } = useAuth();
@@ -92,21 +92,7 @@ export function Home() {
   return <>
     <main className="w-full h-screen flex self-center place-content-center place-items-center">
       <div className="space-y-6">
-
-        {/* Ran out of time to debug the map problem */}
-        {/* {activeVehicle && 
-          <MapContainer center={[40.505, -100.09]} zoom={13} >
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={[40.505, -100.09]}>
-                <Popup>
-                  You are here!
-                </Popup>
-            </Marker>
-          </MapContainer>} */}
-        
+        {activeVehicle && <Map/>}
         <RideInterface activeVehicle={activeVehicle} code={code}>MAP</RideInterface>
         <div className="space-y-6">
           <div className="mt-2">
