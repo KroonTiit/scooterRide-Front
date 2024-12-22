@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "../context/authContext.js";
 import { db } from "../firebase/firebase.js";
 import { doc, getDoc } from "firebase/firestore";
+import {RideInterface} from "./rideInterface.js"
 import axios from "axios";
+// import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 export function Home() {
   const { currentUser } = useAuth();
-
   const [code, setCode] = useState('');
   const [activeVehicle, setActiveVehicle] = useState();
   const [command, setCommand] = useState("START");
@@ -31,8 +32,8 @@ export function Home() {
 
       if (userDoc.exists()) {
         const activeVehicle = userDoc.data().activeVehicle;
-        console.log("Active Vehicle:", activeVehicle);
         setActiveVehicle(activeVehicle);
+
       } else {
         console.error("No such user document exists");
       }
@@ -55,7 +56,6 @@ export function Home() {
     }).catch((error) => {
       console.log(error);
     });
-    console.log(activeVehicle);
   };
 
   const toggleScooterState = async () => {
@@ -74,8 +74,7 @@ export function Home() {
 
   const onToggleScooterState = async (e) => {
     e.preventDefault();
-    console.log(code);
-    if (code.length != 0) {
+    if (code.length !== 0) {
       await toggleScooterState();
     }
   }
@@ -93,42 +92,60 @@ export function Home() {
   return <>
     <main className="w-full h-screen flex self-center place-content-center place-items-center">
       <div className="space-y-6">
-        <h1>Pair with Ride</h1>
-        <div className="mt-2">
-          <input
-            id="code"
-            name="code"
-            type="code"
-            required
-            autoComplete="code"
-            placeholder="Insert scooter code & click Pair"
-            value={code} onChange={(e) => setCode(e.target.value)}
-            className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-          />
-        </div>
-        {/* ternery for the pai/unpair button */}
-          {!activeVehicle ? <button
-            onClick={onSubmitCode}
-            type="submit"
-            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Pair
-          </button>
-          :
+
+        {/* Ran out of time to debug the map problem */}
+        {/* {activeVehicle && 
+          <MapContainer center={[40.505, -100.09]} zoom={13} >
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={[40.505, -100.09]}>
+                <Popup>
+                  You are here!
+                </Popup>
+            </Marker>
+          </MapContainer>} */}
+        
+        <RideInterface activeVehicle={activeVehicle} code={code}>MAP</RideInterface>
+        <div className="space-y-6">
+          <div className="mt-2">
+            <input
+              id="code"
+              name="code"
+              type="code"
+              required
+              autoComplete="code"
+              placeholder="Insert scooter code & click Pair"
+              value={code} onChange={(e) => setCode(e.target.value)}
+              disabled= {activeVehicle}
+              className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+            />
+          </div>
+          {/* ternery for the pair/unpair button */}
+            {!activeVehicle ? <button
+              onClick={onSubmitCode}
+              type="submit"
+              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Pair
+            </button>
+            :
+            <button
+              onClick={onUnPair}
+              type="submit"
+              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              UnPair
+            </button>
+            }
           <button
-            onClick={onUnPair}
-            type="submit"
+            onClick={onToggleScooterState}
             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            UnPair
+            {command}
           </button>
-          }
-        <button
-          onClick={onToggleScooterState}
-          className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          {command}
-        </button>
+        </div>
       </div>
     </main>
   </>;
