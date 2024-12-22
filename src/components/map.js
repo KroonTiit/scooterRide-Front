@@ -27,7 +27,7 @@ export function Map(){
   };
 
   return(<>
-    <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+    <LoadScript googleMapsApiKey={process.env.GOOGLE_MAPS_API_KEY}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={{lat: userLocation.latitude, lng: userLocation.longitude}}

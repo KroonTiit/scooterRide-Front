@@ -15,7 +15,7 @@ export function Home() {
 
 
   const pairWithScooter = async () => {
-      await axios.post(`${process.env.REACT_APP_API_URL}/pair?apiKey=${currentUser.stsTokenManager.accessToken}`, {
+      await axios.post(`${process.env.API_URL}/pair?apiKey=${currentUser.stsTokenManager.accessToken}`, {
         vehicleCode: code,
       }).then((success) => {
         if (success.status < 300) {
@@ -48,7 +48,7 @@ export function Home() {
       toggleScooterState();
     }
     await axios.delete(
-      `${process.env.REACT_APP_API_URL}/pair?apiKey=${currentUser.stsTokenManager.accessToken}`,
+      `${process.env.API_URL}/pair?apiKey=${currentUser.stsTokenManager.accessToken}`,
       { data: { vehicleId: activeVehicle } }
     ).then((success) => {
         if (success.status < 300) {
@@ -60,7 +60,7 @@ export function Home() {
   };
 
   const toggleScooterState = async () => {
-      await axios.post(`${process.env.REACT_APP_API_URL}/send-commands?apiKey=${currentUser.stsTokenManager.accessToken}`, {
+      await axios.post(`${process.env.API_URL}/send-commands?apiKey=${currentUser.stsTokenManager.accessToken}`, {
         vehicleId: activeVehicle, 
         command: command
       }).then((success) =>{
