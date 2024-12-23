@@ -34,8 +34,8 @@ export function RideInterface({activeVehicle, code}){
   return <>
     <div className="lg:flex lg:items-center lg:justify-between">
       <div className="min-w-0 flex-1">
-        <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-          {activeVehicle ? `Paired with ${code}`: "Enter code to pair with Scooter"}
+        <h2 className="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight break-all">
+          {activeVehicle ? `Paired with ${code}`: "Enter code to pair a Scooter"}
         </h2>
         {activeVehicle &&
           <div>
