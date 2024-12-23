@@ -15,7 +15,7 @@ export function Home() {
 
 
   const pairWithScooter = async () => {
-      await axios.post(`${process.env.API_URL}/pair?apiKey=${currentUser.stsTokenManager.accessToken}`, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/pair?apiKey=${currentUser.stsTokenManager.accessToken}`, {
         vehicleCode: code,
       }).then((success) => {
         if (success.status < 300) {
@@ -48,7 +48,7 @@ export function Home() {
       toggleScooterState();
     }
     await axios.delete(
-      `${process.env.API_URL}/pair?apiKey=${currentUser.stsTokenManager.accessToken}`,
+      `${process.env.REACT_APP_API_URL}/pair?apiKey=${currentUser.stsTokenManager.accessToken}`,
       { data: { vehicleId: activeVehicle } }
     ).then((success) => {
         if (success.status < 300) {
@@ -60,7 +60,7 @@ export function Home() {
   };
 
   const toggleScooterState = async () => {
-      await axios.post(`${process.env.API_URL}/send-commands?apiKey=${currentUser.stsTokenManager.accessToken}`, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/send-commands?apiKey=${currentUser.stsTokenManager.accessToken}`, {
         vehicleId: activeVehicle, 
         command: command
       }).then((success) =>{
@@ -91,9 +91,12 @@ export function Home() {
   }
 
   return <>
-    <main className="w-full h-screen flex self-center place-content-center place-items-center">
-      <div className="space-y-6">
-        {activeVehicle && <Map/>}
+    <main className="w-full h-screen flex flex-col self-center place-content-center place-items-center">
+    {activeVehicle && 
+      <div className="w-full h-screen flex self-center place-content-center place-items-center">
+        <Map/>
+      </div>}
+      <div className="space-y-6 w-10/12 lg:w-96 py-2">
         <RideInterface activeVehicle={activeVehicle} code={code}>MAP</RideInterface>
         <div className="space-y-6">
           <div className="mt-2">
