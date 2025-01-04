@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebase/firebase.js";
 import { doc, getDoc } from "firebase/firestore";
 
-export function RideInterface({activeVehicle, code}){
+export function RideInterface({
+  activeVehicle,
+  code,
+  children,
+}: {
+  activeVehicle: any;
+  code: any;
+  children?: React.ReactNode; // Make children optional
+}){
   const [odometer, setOdometer] = useState();
   const [stateOfCharge, setStateOfCharge] = useState();
   const [powered, setPowered] = useState();
@@ -16,10 +24,10 @@ export function RideInterface({activeVehicle, code}){
         if(activeVehicle){
           const vehicleDocRef = doc(db, "vehicles", activeVehicle);
           const vehicleDoc = await getDoc(vehicleDocRef);
-          setOdometer(vehicleDoc._document.data.value.mapValue.fields.odometer.doubleValue);
-          setPowered(vehicleDoc._document.data.value.mapValue.fields.poweredOn.booleanValue);
-          setStateOfCharge(vehicleDoc._document.data.value.mapValue.fields.soc.integerValue);
-          setRange(vehicleDoc._document.data.value.mapValue.fields.estimatedRange.integerValue);
+          setOdometer(vehicleDoc['_document'].data.value.mapValue.fields.odometer.doubleValue);
+          setPowered(vehicleDoc['_document'].data.value.mapValue.fields.poweredOn.booleanValue);
+          setStateOfCharge(vehicleDoc['_document'].data.value.mapValue.fields.soc.integerValue);
+          setRange(vehicleDoc['_document'].data.value.mapValue.fields.estimatedRange.integerValue);
         } else {
           console.error("No such user document exists");
         }

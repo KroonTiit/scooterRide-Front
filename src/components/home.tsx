@@ -5,6 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 import {RideInterface} from "./rideInterface.js"
 import axios from "axios";
 import { Map } from "./map.js";
+import React from "react";
 
 export function Home() {
   const { currentUser } = useAuth();
@@ -52,7 +53,7 @@ export function Home() {
       { data: { vehicleId: activeVehicle } }
     ).then((success) => {
         if (success.status < 300) {
-          setActiveVehicle();
+          setActiveVehicle(undefined);
         }
     }).catch((error) => {
       console.log(error);
